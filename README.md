@@ -8,6 +8,16 @@ Use https://github.com/stripe/stripe-ios (v7.0.2)
 
     cordova plugin add https://github.com/phund/cordova-plugin-applepay-strip.git
 
+    Meteor:
+
+    meteor add cordova:phund.applepay.stripe@https://github.com/phund/cordova-plugin-applepay-strip/tarball/0eb2019bc5cefab7dba58f2a0561995d6ee54510
+
+## Add preference value
+
+    App.configurePlugin('phund.applepay.stripe', {
+      STRIPE_PUBLIC_KEY: 'pk_test_mtVvYM8flDIXvvs6diLSdJCN'
+    });
+
 ## Supported Platforms
 
 - iOS
