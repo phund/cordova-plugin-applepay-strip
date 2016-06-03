@@ -10,7 +10,7 @@ Use https://github.com/stripe/stripe-ios (v7.0.2)
 
     Meteor:
 
-    meteor add cordova:phund.applepay.stripe@https://github.com/phund/cordova-plugin-applepay-strip/tarball/0eb2019bc5cefab7dba58f2a0561995d6ee54510
+    meteor add cordova:phund.applepay.stripe@https://github.com/phund/cordova-plugin-applepay-strip/tarball/5884e98301d3d40de8420ad8dc454264f48be363
 
 ## Add preference value
 

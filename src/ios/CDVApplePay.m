@@ -23,6 +23,7 @@
     return nil;
 }
 
+
 - (void)dealloc
 {
 
@@ -62,13 +63,14 @@
         CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString: @"user has apple pay"];
         [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
     } else {
-#if DEBUG
+        // Debug mode
         CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString: @"in debug mode, simulating apple pay"];
         [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
-#else
-        CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: @"user does not have apple pay"];
-        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
-#endif
+
+        // // Live mode
+        // CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: @"user does not have apple pay"];
+        // [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+
     }
 }
 
@@ -98,25 +100,25 @@
     callbackId = command.callbackId;
 
 
-#if DEBUG
+    // Debug mode
     STPTestPaymentAuthorizationViewController *paymentController;
     paymentController = [[STPTestPaymentAuthorizationViewController alloc]
                              initWithPaymentRequest:request];
     paymentController.delegate = self;
     [self.viewController presentViewController:paymentController animated:YES completion:nil];
-#else
-    if ([Stripe canSubmitPaymentRequest:request]) {
-        PKPaymentAuthorizationViewController *paymentController;
-        paymentController = [[PKPaymentAuthorizationViewController alloc]
-                             initWithPaymentRequest:request];
-        paymentController.delegate = self;
-        [self.viewController presentViewController:paymentController animated:YES completion:nil];
-    } else {
-        CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: @"You dont have access to ApplePay"];
-        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
-        return;
-    }
-#endif
+
+    // // Live mode
+    // if ([Stripe canSubmitPaymentRequest:request]) {
+    //     PKPaymentAuthorizationViewController *paymentController;
+    //     paymentController = [[PKPaymentAuthorizationViewController alloc]
+    //                          initWithPaymentRequest:request];
+    //     paymentController.delegate = self;
+    //     [self.viewController presentViewController:paymentController animated:YES completion:nil];
+    // } else {
+    //     CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: @"You dont have access to ApplePay"];
+    //     [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    //     return;
+    // }
 }
 
 - (void)paymentAuthorizationViewController:(PKPaymentAuthorizationViewController *)controller
@@ -136,18 +138,18 @@
         [self.viewController dismissViewControllerAnimated:YES completion:nil];
     };
 
-#if DEBUG
+    // Debug mode
     STPCard *card = [STPCard new];
     card.number = @"4242424242424242";
     card.expMonth = 12;
     card.expYear = 2020;
     card.cvc = @"123";
     [[STPAPIClient sharedClient] createTokenWithCard:card completion:tokenBlock];
-#else
-    [[STPAPIClient sharedClient] createTokenWithPayment:payment
-                    operationQueue:[NSOperationQueue mainQueue]
-                        completion:tokenBlock];
-#endif
+
+    // // Live mode
+    // [[STPAPIClient sharedClient] createTokenWithPayment:payment
+    //                 operationQueue:[NSOperationQueue mainQueue]
+    //                     completion:tokenBlock];
 }
 
 - (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
